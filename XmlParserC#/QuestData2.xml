@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<quests>
+  <quest id="3" status="0" name="Квест 1" title="ЛАЛАЛА" description="ЛАЛАЛА" toDo="ЛАЛАЛА" />
+  <quest id="4" status="0" name="Квест 2" title="ЛАЛАЛА" description="ЛАЛАЛА" toDo="ЛАЛАЛА" />
+  <quest id="5" status="0" name="Квест 3" title="ЛАЛАЛА" description="ЛАЛАЛА" toDo="ЛАЛАЛА" />
+  <quest id="6" status="0" name="Квест 4" title="ЛАЛАЛА" description="ЛАЛАЛА" toDo="ЛАЛАЛА" />
+  <quest id="7" status="0" name="Квест 5" title="ЛАЛАЛА" description="ЛАЛАЛА" toDo="ЛАЛАЛА" />
+  <quest id="8" status="0" name="Квест 6" title="ЛАЛАЛА" description="ЛАЛАЛА" toDo="ЛАЛАЛА" />
+  <quest id="9" status="0" name="Квест 7" title="ЛАЛАЛА" description="ЛАЛАЛА" toDo="ЛАЛАЛА" />
+  <quest id="10" status="0" name="Квест 8" title="ЛАЛАЛА" description="ЛАЛАЛА" toDo="ЛАЛАЛА" />
+  <quest id="11" status="0" name="Квест 9" title="ЛАЛАЛА" description="ЛАЛАЛА" toDo="ЛАЛАЛА" />
+  <quest id="12" status="0" name="Квест 10" title="ЛАЛАЛА" description="ЛАЛАЛА" toDo="ЛАЛАЛА" />
+</quests>
