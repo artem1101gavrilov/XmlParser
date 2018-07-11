@@ -10,14 +10,24 @@ namespace CsharpXml
 {
     public class Quest
     {
-        public enum Status { NOT_RECEIVED, ACTIVE, DONE };
-
-        public Status status;
+        public DateTime data;
+        public int status;
         public int id; //Номер квеста
         public string name; //Текстовое поле для кнопки
         public string title; // Оглавление Квеста
         public string description; // Описание квеста
         public string toDo; // что надо сделать в квесте
+
+        public void SetParam(Quest QuestParam)
+        {
+            data = QuestParam.data;
+            status = QuestParam.status;
+            id = QuestParam.id;
+            name = QuestParam.name;
+            title = QuestParam.title;
+            description = QuestParam.description;
+            toDo = QuestParam.toDo;
+        }
     }
 
     class Program
@@ -50,7 +60,7 @@ namespace CsharpXml
                 foreach (XmlNode itemItens in itemContent)
                 {
                     if (itemItens.Name == "id") newQuest.id = int.Parse(itemItens.InnerText); // TODO to int
-                    else if (itemItens.Name == "status") newQuest.status = (Quest.Status)int.Parse(itemItens.InnerText);
+                    else if (itemItens.Name == "status") newQuest.status = int.Parse(itemItens.InnerText);
                     else if (itemItens.Name == "name") newQuest.name = itemItens.InnerText;
                     else if (itemItens.Name == "title") newQuest.title = itemItens.InnerText;
                     else if (itemItens.Name == "description") newQuest.description = itemItens.InnerText;
@@ -74,7 +84,7 @@ namespace CsharpXml
               <quest id = "1" status = "0" name = "Квест 1" title = "ЛАЛАЛА" description = "ЛАЛАЛА" toDo = "ЛАЛАЛА"/>
             */
             
-            Console.Write("XML parser\n");
+            Console.Write("XML parser start\n");
 
             XmlDocument document = new XmlDocument();
             document.Load("QuestData2.xml");
@@ -84,19 +94,22 @@ namespace CsharpXml
             foreach (XmlNode item in dataList)
             {
                 Quest newQuest = new Quest();
-                newQuest.id = int.Parse(item.Attributes[0].InnerText); // TODO to int
-                newQuest.status = (Quest.Status)int.Parse(item.Attributes[1].InnerText);
-                newQuest.name = item.Attributes[2].InnerText;
-                newQuest.title = item.Attributes[3].InnerText;
-                newQuest.description = item.Attributes[4].InnerText;
-                newQuest.toDo = item.Attributes[5].InnerText;
+                newQuest.data = DateTime.Parse(item.Attributes[0].InnerText);
+                newQuest.id = int.Parse(item.Attributes[1].InnerText); // TODO to int
+                newQuest.status = int.Parse(item.Attributes[2].InnerText);
+                newQuest.name = item.Attributes[3].InnerText;
+                newQuest.title = item.Attributes[4].InnerText;
+                newQuest.description = item.Attributes[5].InnerText;
+                newQuest.toDo = item.Attributes[6].InnerText;
                 QuestList.Add(newQuest);
             }
 
-            foreach (Quest value in QuestList)
+            /*foreach (Quest value in QuestList)
             {
                 Console.Write(value.id + " " + value.name + "\n");
-            }
+            }*/
+
+            Console.Write("XML parser finish\n");
         }
 
         //По считанному XML создадим новый:
@@ -106,16 +119,34 @@ namespace CsharpXml
         //Переименуем
         public static void CreateXMLQuest()
         {
+            //Сортировка нашего листа по ключевому полю id
+            //Сортировка пузырьком
+            for (int i = 0; i < QuestList.Count - 1; i++)
+            {
+                for (int j = 0; j < QuestList.Count - i - 1; j++)
+                {
+                    if (QuestList[j].data > QuestList[j + 1].data)
+                    {
+                        Quest buf = new Quest();
+                        buf.SetParam(QuestList[j]);
+                        QuestList[j].SetParam(QuestList[j + 1]);
+                        QuestList[j + 1].SetParam(buf);
+                    }
+                }
+            }
+
+
+            Console.Write("XML create start\n");
             XmlTextWriter writer = new XmlTextWriter("QuestData3.xml", Encoding.UTF8);
             writer.Formatting = Formatting.Indented;
             writer.WriteStartDocument();
             writer.WriteStartElement("quests");
-            //тут можно или даже нужно отсортировать данные по полю id и соотвественно поменять цикл или сделать сортировку до этого.
             foreach (Quest quest in QuestList)
             {
                 writer.WriteStartElement("quest");
-                writer.WriteAttributeString("id", (quest.id + 1).ToString());
-                writer.WriteAttributeString("status", ((int)(quest.status)).ToString());
+                writer.WriteAttributeString("data", quest.data.ToShortDateString());
+                writer.WriteAttributeString("id", (quest.id).ToString());
+                writer.WriteAttributeString("status", (quest.status).ToString());
                 writer.WriteAttributeString("name", quest.name);
                 writer.WriteAttributeString("title", quest.title);
                 writer.WriteAttributeString("description", quest.description);
@@ -127,12 +158,18 @@ namespace CsharpXml
 
             File.Delete("QuestData2.xml");
             File.Move("QuestData3.xml", "QuestData2.xml");
+            Console.Write("XML create finish\n");
         }
 
         static void Main(string[] args)
         {
             QuestFunc2();
             CreateXMLQuest();
+
+            /*
+            DateTime date1 = new DateTime();
+            date1 = DateTime.Today;
+            Console.WriteLine(date1.ToShortDateString());*/
 
             Console.ReadKey(); 
         }
