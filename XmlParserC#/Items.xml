@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<items>
+  <item>
+    <id>1</id>
+    <name>Яблоко</name>
+    <descriptionItem>Сочное, зеленое.</descriptionItem>
+    <pathIcon>Inv/Food/Apple_1</pathIcon>
+    <categories>3</categories>
+    <isstackable>1</isstackable>
+    <weight>1</weight>
+    <cost>1</cost>
+    <RestoringHP>10</RestoringHP>
+  </item>
+</items>
