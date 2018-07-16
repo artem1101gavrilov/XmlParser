@@ -30,6 +30,21 @@ namespace CsharpXml
         }
     }
 
+    public class Item
+    {
+        public int id;
+        public string name;
+        public bool isStackable;
+        public int Stackable; //сколько в стеке
+        public string descriptionItem;
+        public string pathIcon;
+        public int categories; //К какой категории будет относиться во вкладках в инвентаре
+        public int weight; //вес предмета
+        public int cost; 
+        public int RestoringHP;
+    }
+
+
     class Program
     {
         public static void QuestFunc1()
@@ -76,6 +91,7 @@ namespace CsharpXml
         }
 
         public static List<Quest> QuestList = new List<Quest>(); //Лист со всеми квестами
+        public static List<Item> ItemList = new List<Item>();
 
         public static void QuestFunc2()
         {
@@ -161,10 +177,46 @@ namespace CsharpXml
             Console.Write("XML create finish\n");
         }
 
+        public static void ItemFunc()
+        {
+            Item itemData = new Item();
+            int randNumb = 1; 
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load("Items.xml");
+
+            XmlNodeList dataList = xmlDoc.GetElementsByTagName("item");
+
+            foreach (XmlNode item in dataList)
+            {
+                XmlNodeList itemContent = item.ChildNodes;
+                bool ThisItem = false;
+                foreach (XmlNode itemItens in itemContent)
+                {
+                    if (itemItens.Name == "id")
+                    {
+                        if (int.Parse(itemItens.InnerText) == randNumb)
+                        { //TODO to int
+                            itemData.id = randNumb;
+                            ThisItem = true;
+                        }
+                    }
+                    else if (itemItens.Name == "name" && ThisItem) itemData.name = itemItens.InnerText;
+                    else if (itemItens.Name == "descriptionItem" && ThisItem) itemData.descriptionItem = itemItens.InnerText;
+                    else if (itemItens.Name == "pathIcon" && ThisItem) itemData.pathIcon = itemItens.InnerText;
+                    else if (itemItens.Name == "categories" && ThisItem) itemData.categories = int.Parse(itemItens.InnerText);
+                    else if (itemItens.Name == "isstackable" && ThisItem) itemData.isStackable = int.Parse(itemItens.InnerText) == 1 ? true : false; //был bool.Parse
+                    else if (itemItens.Name == "weight" && ThisItem) itemData.weight = int.Parse(itemItens.InnerText);
+                    else if (itemItens.Name == "RestoringHP" && ThisItem) itemData.RestoringHP = int.Parse(itemItens.InnerText);
+                }
+                ItemList.Add(itemData);
+            }
+
+        }
+
         static void Main(string[] args)
         {
-            QuestFunc2();
-            CreateXMLQuest();
+            ItemFunc();
 
             /*
             DateTime date1 = new DateTime();
